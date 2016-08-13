@@ -1,0 +1,135 @@
+@font-face {
+  font-family: 'Nanum Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.eot);
+  src: url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
+       url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.woff2) format('woff2'),
+       url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.woff) format('woff'),
+       url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.ttf) format('truetype');
+}
+
+html, body, article, figure, section, header, main, footer {
+  font-family: 'Nanum Gothic';
+  width: 100%;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  -webkit-user-select:none;
+}
+html, body {
+  height: 100%;
+  overflow: auto;
+}
+.thumbnail_image {
+  border-radius: 50%;
+}
+#kakao-login {
+  height: 100%;
+  position: fixed;
+  background-color: #333;
+  opacity: 0.9;
+  z-index: 100;
+  overflow: hidden;
+}
+#kakao-login-btn {
+  position: relative;
+  top: 100px;
+}
+header {
+  height: 60px;
+}
+header section {
+  width: 49%;
+  display: inline-block;
+  height: 100%;
+  font-size: 20px;
+}
+header section img {
+  display: inline-block;
+  margin: 5px;
+  height: 50px;
+}
+header section figcaption {
+  display: inline-block;
+  margin-top: 18px;
+}
+header #black {
+  background-color: #333;
+  float: left;
+  margin-right: 2%;
+  color: white;
+}
+header #black img {
+  float: left;
+}
+header #black figcaption {
+  margin-right: 20px;
+}
+header #white {
+  background-color: #ccc;
+  float: left;
+}
+header #white img {
+  float: right;
+}
+header #white figcaption {
+  margin-left: 20px;
+}
+main {
+  position: relative;
+  background-image: url("../img/board.png");
+  background-color: #fff;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vw;
+  overflow: hidden;
+  background-position: 0px 0px;
+}
+main table {
+  position: absolute;
+  margin-top: 30px;
+  margin-left: 30px;
+  width: 680px;
+  height: 680px;
+  border-collapse: collapse;
+	border-spacing: 0px;
+	table-layout: fixed;
+	left: 0px;
+	top: 0px;
+}
+main table tr {
+  padding: 0px;
+  margin: 0px;
+}
+main table td {
+  width: 40px;
+  height: 40px;
+  padding: 0px;
+}
+main table td img {
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  padding: 0px;
+  display: block;
+}
+footer {
+  background-color: #fff;
+}
+footer p {
+  margin-bottom: 0.4em;
+}
+footer section {
+  width: 100%;
+}
+footer figure {
+  display: inline-block;
+  width: 50px;
+  padding: 3px;
+}
+footer figure img {
+  width: 100%;
+  margin: auto;
+}

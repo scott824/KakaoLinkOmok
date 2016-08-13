@@ -1,0 +1,12 @@
+{
+  "name": "kakaoLinkOmok",
+  "version": "0.0.1",
+  "description": "kakao Link Omok",
+  "main": "app.js",
+  "repository": "",
+  "author": "Sangchul, Lee <scott824@naver.com",
+  "dependencies": {
+    "express": "~3.2.4",
+    "socket.io": "~0.9.14"
+  }
+}
