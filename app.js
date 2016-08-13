@@ -1,4 +1,5 @@
 // start server
+// crash
 var express = require('express');
 var socketio = require('socket.io');
 var http = require('http');
