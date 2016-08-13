@@ -1,5 +1,5 @@
 // start server
-// this is crash
+// i dont want crash
 var express = require('express');
 var socketio = require('socket.io');
 var http = require('http');
