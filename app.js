@@ -1,5 +1,9 @@
 // start server
+<<<<<<< HEAD
 // i dont want crash too
+=======
+// i dont want crash
+>>>>>>> e342b84e899b1c35ee42c779528e9bb3676d6771
 var express = require('express');
 var socketio = require('socket.io');
 var http = require('http');
