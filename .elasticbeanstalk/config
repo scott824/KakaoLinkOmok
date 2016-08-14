@@ -1,0 +1,4 @@
+[global]
+ApplicationName=My First Elastic Beanstalk Application
+EnvironmentName=kakaolinkomok
+Region=ap-northeast-2

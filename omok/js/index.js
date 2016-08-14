@@ -4,16 +4,25 @@
  *  made by LeeSangchul , SC_production
  */
 
+/*
+ *  기능 미추가 목록
+ * 1. 시간초 기능 - timeout
+ * 2. 턴 표시
+ * 3. 흑백 선택시 아래에서 날라가는 에니메이션
+ * 4. 33 감지 기능
+ * 5. 승리 감지 후 초기화
+ * 
+ */
 
 /* global io */
 /* global Kakao */
-/* global $ */
+/* global $ -> jquery*/
 
 const TABLEROW = 17;
 const TABLECOL = 17;
 
 // connect to server socket
-var socket = io.connect('http://kakaolinkomok.ap-northeast-2.elasticbeanstalk.com');
+var socket = io.connect();
 
 // user info
 var userid;
@@ -33,7 +42,8 @@ function initBoard() {
   }
   return arr;
 }
-
+/******************************************************************************/
+// onload
 window.onload = function() {
   // const
   const BOARDWIDTH = 740;
@@ -51,6 +61,7 @@ window.onload = function() {
     window.nickname = nickname;
     window.thumbnail_image = thumbnail_image;
     useradd(userid, nickname, thumbnail_image);
+    getSocketEvent(); // get socket event after login
   });
   
   // create table in main
@@ -68,11 +79,11 @@ window.onload = function() {
   
   // scroll board by user
   main.addEventListener('touchstart', function(event) {
-    var touch = event.touches[0];
+    const touch = event.touches[0];
     main.startXY = {x: touch.clientX, y: touch.clientY};
   }, false);
   main.addEventListener('touchmove', function(event) {
-    var touch = event.touches[0];
+    const touch = event.touches[0];
     const X = touch.clientX - main.startXY.x;
     const Y = touch.clientY - main.startXY.y;
     main.startXY.x = touch.clientX;
@@ -89,38 +100,16 @@ window.onload = function() {
 };
 
 /******************************************************************************/
-// new user come
-socket.on('useradd', useradd);
 function useradd(userid, nickname, thumbnail_image) {
-  var figure = document.createElement('figure');
-  figure.id = userid;
-  
-  var img = document.createElement('img');
-  img.src = thumbnail_image;
-  img.className = "thumbnail_image";
-  
-  var figcaption = document.createElement('figcaption');
-  figcaption.innerHTML = nickname;
-  
-  figure.appendChild(img);
-  figure.appendChild(figcaption);
-  figure.style.width = '1px';
-  figure.style.height = '1px';
-  figure.style.fontSize = '1px';
-  document.getElementById('profiles').appendChild(figure);
-
-  $('#' + userid).animate({
-    width: '50px',
-    height: '73px',
-    fontSize: '15px'
-  }, 'slow');
-  
-  console.log('add id : ' + userid);
+  makeFigureWithPOPAnimation({
+    userid: userid,
+    nickname: nickname,
+    thumbnail_image: thumbnail_image
+  }, document.getElementById('profiles'));
+  console.log('add user -> id: ' + userid + ', name:' + nickname);
 }
 
-
-// exist user getout
-socket.on('userdel', function(userid) {
+function userdel(userid) {
   $('#' + userid).animate({
     width: '1px',
     height: '1px',
@@ -129,9 +118,14 @@ socket.on('userdel', function(userid) {
     document.getElementById(userid).remove();
   });
   console.log('remove id : ' + userid);
-});
+}
 
+function getSocketEvent() {
+// new user come
+socket.on('useradd', useradd);
 
+// exist user out
+socket.on('userdel', userdel);
 
 // get exist black-white player
 socket.on('setplayer', function(color, user) {
@@ -141,13 +135,15 @@ socket.on('setplayer', function(color, user) {
     section.removeChild(section.childNodes[0]);
   }
   
-  // player exist
+  // player exist -> unable click
   if(user.userid) {
     section.removeEventListener('click', click, false);
+    // footer에서 가져오는 에니메이션
   }
-  // set player
+  // player !exist -> able click
   else {
     section.addEventListener('click', click, false);
+    // 뿅 나타나는 에니메이션
   }
   function click(event) {
     socket.emit('aspiration', color);
@@ -166,7 +162,6 @@ socket.on('setplayer', function(color, user) {
 });
 
 
-
 socket.on('yourturn', function(color, count) {
   console.log('yourturn');
   window.userStatus = color;
@@ -175,19 +170,19 @@ socket.on('yourturn', function(color, count) {
   
   Array.prototype.forEach.call(tds, function(td, index) {
     
-    var touchmove;
+    var touchmoved;
     
     function touchstart(event) {
-      touchmove = false;
+      touchmoved = false;
     }
     
     function touchmove(event) {
-      touchmove = true;
+      touchmoved = true;
     }
     
     function touchend(event) {
       if(!td.childNodes[0])
-      if(touchmove === false && window.userStatus === color) {
+      if(touchmoved === false && window.userStatus === color) {
         var img = document.createElement('img');
         img.src = 'img/' + color + '.png';
         td.appendChild(img);
@@ -248,6 +243,7 @@ socket.on('updateboard', function(color, row, col, count) {
 socket.on('message', function(message) {
   alert(message);
 });
+}// getsocketEvent function end line
 
 /******************************************************************************/
 // login to kakao and get id, nickname, thumbnail_image
@@ -295,4 +291,31 @@ function clearBoard() {
     td.innerHTML = '';
     td.removeEventListener();// 안드로이드에서 작동 안됌
   });
+}
+
+function makeFigureWithPOPAnimation(user, parentNode) {
+  var figure = document.createElement('figure');
+  if(user.userid) {
+    figure.id = user.userid;
+  }
+
+  var img = document.createElement('img');
+  img.src = user.thumbnail_image;
+  img.className = 'thumbnail_image';
+
+  var figcaption = document.createElement('figcaption');
+  figcaption.innerHTML = user.nickname;
+
+  figure.appendChild(img);
+  figure.appendChild(figcaption);
+  figure.style.width = '1px';
+  figure.style.height = '1px';
+  figure.style.fontSize = '1px';
+  parentNode.appendChild(figure);
+
+  $(figure).animate({
+    width: '50px',
+    height: '73px',
+    fontSize: '15px'
+  }, 'slow', 'swing');
 }

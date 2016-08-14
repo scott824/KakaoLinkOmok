@@ -15,6 +15,7 @@ app.get('/', function(req, res) {
 
 var io = socketio.listen(server);
 
+if(!process.env.PORT) { process.env.PORT = 8124}  // this is for localhost test
 server.listen(process.env.PORT);
 
 
