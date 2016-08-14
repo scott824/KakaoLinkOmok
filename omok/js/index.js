@@ -13,7 +13,7 @@ const TABLEROW = 17;
 const TABLECOL = 17;
 
 // connect to server socket
-var socket = io.connect();
+var socket = io.connect('http://kakaolinkomok.ap-northeast-2.elasticbeanstalk.com');
 
 // user info
 var userid;
