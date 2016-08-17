@@ -77,23 +77,22 @@ header #white img {
 header #white figcaption {
   margin-left: 20px;
 }
+
 main {
   position: relative;
-  background-image: url("../img/board.png");
   background-color: #fff;
-  background-repeat: no-repeat;
   width: 100vw;
   height: 100vw;
   overflow: hidden;
-  background-position: 0px 0px;
 }
 main table {
+  background-image: url("../img/board.png");
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
   position: absolute;
-  margin-top: 30px;
-  margin-left: 30px;
-  width: 680px;
-  height: 680px;
-  border-collapse: collapse;
+  padding: 30px;
+  width: 740px;
+  height: 740px;
 	border-spacing: 0px;
 	table-layout: fixed;
 	left: 0px;

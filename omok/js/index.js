@@ -42,6 +42,10 @@ function initBoard() {
   }
   return arr;
 }
+
+var url = window.location.pathname;
+var room = url.split('/')[1];
+console.log('url: ' + url);
 /******************************************************************************/
 // onload
 window.onload = function() {
@@ -53,10 +57,10 @@ window.onload = function() {
   document.body.addEventListener('touchmove',function(event){
     event.preventDefault();
   }, false);
-  
+
   // Login to Kakao
   kakaoLogin(function(userid, nickname, thumbnail_image) {
-    socket.emit('addme', userid, nickname, thumbnail_image);
+    socket.emit('addme', room, userid, nickname, thumbnail_image);
     window.userid = userid;
     window.nickname = nickname;
     window.thumbnail_image = thumbnail_image;
@@ -76,7 +80,7 @@ window.onload = function() {
     table.appendChild(tr);
   }
   main.appendChild(table);
-  
+
   // scroll board by user
   main.addEventListener('touchstart', function(event) {
     const touch = event.touches[0];
@@ -249,26 +253,37 @@ socket.on('message', function(message) {
 // login to kakao and get id, nickname, thumbnail_image
 function kakaoLogin(callback) {
   Kakao.init('5f26fbc306c7d87778b19f6c0837fc20');
-  Kakao.Auth.createLoginButton({
-    container: '#kakao-login-btn',
-    success: function(authObj) {
-      Kakao.API.request({
-        url: '/v1/user/me',
-        success: function(res) {
-          document.getElementById('kakao-login').remove();
-          callback(res.id, 
-                   res.properties.nickname, 
-                   res.properties.thumbnail_image);
+  Kakao.Auth.getStatus(function(statusObj) {
+    console.log('check login before');
+    if(statusObj.status === 'connected') {
+      loginSuccess(statusObj.user);
+    } else {
+      Kakao.Auth.createLoginButton({
+        container: '#kakao-login-btn',
+        success: function(authObj) {
+          Kakao.API.request({
+            url: '/v1/user/me',
+            success: loginSuccess,
+            fail: function(error) {
+              alert(JSON.stringify(error));
+            }
+          });
         },
-        fail: function(error) {
-          alert(JSON.stringify(error));
-        }
+        fail: function(err) {
+          alert(JSON.stringify(err));
+        },
+        persistAccessToken: true,
+        persistRefreshToken: true
       });
-    },
-    fail: function(err) {
-      alert(JSON.stringify(err));
     }
   });
+  
+  function loginSuccess(res) {
+    document.getElementById('kakao-login').remove();
+    callback(res.id, 
+              res.properties.nickname, 
+              res.properties.thumbnail_image);
+  }
 }
 
 // scroll main
@@ -278,10 +293,10 @@ function scrollBoard(x, y, speed) {
     left: '+=' + x + 'px',
     top: '+=' + y + 'px'
   }, speed);
-  $('#main').animate({
-    backgroundPositionX: '+=' + x + 'px',
-    backgroundPositionY: '+=' + y + 'px'
-  }, speed);
+  // $('#main').animate({
+  //   backgroundPositionX: '+=' + x + 'px',
+  //   backgroundPositionY: '+=' + y + 'px'
+  // }, speed);
 }
 
 function clearBoard() {
