@@ -9,14 +9,14 @@
        url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.ttf) format('truetype');
 }
 
-html, body, article, figure, section, header, main, footer {
+html, body, article, figure, header, main, footer {
   font-family: 'Nanum Gothic';
   width: 100%;
   border: 0px;
   margin: 0px;
   padding: 0px;
   text-align: center;
-  -webkit-user-select:none;
+  -webkit-user-select: none;
 }
 html, body {
   height: 100%;
@@ -121,11 +121,15 @@ footer p {
   margin-bottom: 0.4em;
 }
 footer section {
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 footer figure {
   display: inline-block;
   width: 50px;
+  height: 73px;
+  font-size: 15px;
+  opacity: 1;
   padding: 3px;
 }
 footer figure img {
