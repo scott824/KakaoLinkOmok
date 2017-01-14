@@ -424,3 +424,7 @@ function printBoard(board) {
     console.log(arr);
   });
 }
+
+function commitTest() {
+  console.log('test');
+}
